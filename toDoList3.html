@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #cabecalho {
+            font-style: italic;
+            color: orangered;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #tarefaInput {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #btn_adicionar {
+            padding: 10px 15px;
+            background-color: orangered;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #btn_adicionar:hover {
+            background-color: darkorange;
+        }
+
+        .lista-tarefas {
+            width: 80%;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tarefa {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn_excluir {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn_excluir:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="cabecalho">
+        <h1>Lista de Tarefas</h1> <!-- Texto de cabeçalho -->
+    </header>
+
+    <main>
+        <!-- cria area de digitação da nova tarefa -->
+        <input type="text" id="tarefaInput" placeholder="Digite a nova tarefa..." /> 
+        <button id="btn_adicionar">Adicionar Tarefa</button> <!-- cria botão adicionar -->
+        <ul id="listaTarefas" class="lista-tarefas"></ul> <!-- cria lista não ordenada -->
+    </main>
+
+    <footer>
+        <p style="text-align:center;">Direitos reservados Ítalo Decanio&copy; 02/10/2024</p> <!-- texto de rodapé -->
+    </footer>
+
+    <script>
+        const btnAdicionar = document.getElementById("btn_adicionar"); //DOM pega elemento do html, do botão adicionar
+        const tarefaInput = document.getElementById("tarefaInput");  //DOM pega elemento do html, da área de texto digitado, da tarefa nova
+        const listaTarefas = document.getElementById("listaTarefas"); //DOM pega elemento do html, para criação de lista
+
+        btnAdicionar.addEventListener("click", () => { //DOM pega elemento do html, para adicionar um evento ao botão adicionar
+            const tarefaTexto = tarefaInput.value.trim(); //DOM pega elemento do html, aloca numa constante o valor digitado no campo input e aplica funcionalidade trim , para desconsiderar os espaço antes e depois do texto
+            if (tarefaTexto === "") {
+                alert("Por favor, digite uma tarefa."); //emite uma janela de alerta para informar que o campo input ficou em branco
+                return;
+            }
+
+            //cria nova tarefa na proxima linha
+            const novaTarefa = document.createElement("li"); 
+            novaTarefa.classList.add("tarefa");
+
+            //criando check box de marcação de tarefa concluida
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", () => {
+                if (checkbox.checked) {
+                    novaTarefa.style.textDecoration = "line-through"; //efeito de linha no texto de tarefa concluida.
+                } else {
+                    novaTarefa.style.textDecoration = "none";
+                }
+            });
+
+            const tarefaTextoSpan = document.createElement("span"); //o span agrupa o texto da tarefa criada
+            tarefaTextoSpan.textContent = tarefaTexto;
+
+            //cria botão excluir para tarefa adicionada
+            const btnExcluir = document.createElement("button");
+            btnExcluir.textContent = "Excluir";
+            btnExcluir.classList.add("btn_excluir"); 
+
+            //cria o evento que exclui a tarefa através do click
+            btnExcluir.addEventListener("click", () => {
+                listaTarefas.removeChild(novaTarefa); //remove tarefa da lista , caso o evento click seja acionado
+            });
+
+            novaTarefa.appendChild(checkbox); //apresenta o checkbox na tarefa nova
+            novaTarefa.appendChild(tarefaTextoSpan); // add o texto da tarefa no front
+            novaTarefa.appendChild(btnExcluir); //add o botão como recurso filho ao elemento nova tarefa. apresentando ele no front
+
+            listaTarefas.appendChild(novaTarefa); // add nova tarefa a lista de tarefas
+            tarefaInput.value = ""; // Limpa o campo de entrada
+        });
+    </script>
+</body>
+</html>
